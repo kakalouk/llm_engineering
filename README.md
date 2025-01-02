@@ -17,9 +17,9 @@ https://edwarddonner.com/2024/11/13/llm-engineering-resources/
 ## Instant Gratification instructions for Week 1, Day 1
 
 We will start the course by installing Ollama so you can see results immediately!
-1. Download and install Ollama from https://ollama.com
+1. Download and install Ollama from https://ollama.com noting that on a PC you might need to have administrator permissions for the install to work properly
 2. On a PC, start a Command prompt / Powershell (Press Win + R, type `cmd`, and press Enter). On a Mac, start a Terminal (Applications > Utilities > Terminal).
-3. Run `ollama run llama3.2` or for smaller machines try `ollama run llama3.2:1b`
+3. Run `ollama run llama3.2` or for smaller machines try `ollama run llama3.2:1b` - **please note** steer clear of Meta's latest model llama3.3 because at 70B parameters that's way too large for most home computers!  
 4. If this doesn't work, you may need to run `ollama serve` in another Powershell (Windows) or Terminal (Mac), and try step 3 again
 5. And if that doesn't work on your box, I've set up this on the cloud. This is on Google Colab, which will need you to have a Google account to sign in, but is free:  https://colab.research.google.com/drive/1-_f5XZPsChvfU1sJ0QqCePtIuc55LSdu?usp=sharing
 
@@ -32,16 +32,42 @@ After we do the Ollama quick project, and after I introduce myself and the cours
 Hopefully I've done a decent job of making these guides bulletproof - but please contact me right away if you hit roadblocks:
 
 - PC people please follow the instructions in [SETUP-PC.md](SETUP-PC.md)
-- Mac people please follow the instructions in [SETUP-mac.md](SETUP-mac.md)
-- Linux people, the Mac instructions should be close enough!
+- Mac people please follow the instructions in [SETUP-mac.md](SETUP-mac.md)  
+- Linux people please follow the instructions in [SETUP-linux.md](SETUP-linux.md)
+
+The are also PDF versions of the setup instructions in this folder if you'd prefer.
 
 ### An important point on API costs (which are optional! No need to spend if you don't wish)
 
 During the course, I'll suggest you try out the leading models at the forefront of progress, known as the Frontier models. I'll also suggest you run open-source models using Google Colab. These services have some charges, but I'll keep cost minimal - like, a few cents at a time. And I'll provide alternatives if you'd prefer not to use them.
 
-Please do monitor your API usage to ensure you're comfortable with spend; I've included links below. There's no need to spend anything more than a couple of dollars for the entire course. Some AI providers such as OpenAI require a minimum credit like \$5 or local equivalent; we should only spend a fraction of it, and you'll have plenty of opportunity to put it to good use in your own projects. During Week 7 you have an option to spend a bit more if you're enjoying the process - I spend about $10 myself and the results make me very happy indeed! But it's not necessary in the least; the important part is that you focus on learning.
+Please do monitor your API usage to ensure you're comfortable with spend; I've included links below. There's no need to spend anything more than a couple of dollars for the entire course. Some AI providers such as OpenAI require a minimum credit like \$5 or local equivalent; we should only spend a fraction of it, and you'll have plenty of opportunity to put it to good use in your own projects. During Week 7 you have an option to spend a bit more if you're enjoying the process - I spend about \$10 myself and the results make me very happy indeed! But it's not necessary in the least; the important part is that you focus on learning.
 
-I'll also show you an alternative if you'd rather not spend anything on APIs.
+### Free alternative to Paid APIs
+
+Early in the course, I show you an alternative if you'd rather not spend anything on APIs:  
+Any time that we have code like:  
+`openai = OpenAI()`  
+You can use this as a direct replacement:  
+`openai = OpenAI(base_url='http://localhost:11434/v1', api_key='ollama')`
+
+Below is a full example:
+
+```
+# You need to do this one time on your computer
+!ollama pull llama3.2
+
+from openai import OpenAI
+MODEL = "llama3.2"
+openai = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+
+response = openai.chat.completions.create(
+ model=MODEL,
+ messages=[{"role": "user", "content": "What is 2 + 2?"}]
+)
+
+print(response.choices[0].message.content)
+```
 
 ### How this Repo is organized
 
